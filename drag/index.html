@@ -93,8 +93,11 @@
                 -webkit-transform:rotate(270deg); 
             }
 
-
-
+            @media print {
+                @page {
+                    margin: 0; 
+                }
+            }
         </style>
     </head>
     <body>
@@ -114,6 +117,9 @@
                 </div>
                 <div class="control__button delete">
                     <p>Delete</p>
+                </div>
+                <div class="control__button initialize">
+                    <p>Initialize</p>
                 </div>
                 <div class="control__button finish">
                     <p>Finish</p>
@@ -155,82 +161,98 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
         <script src="printThis.js"></script>
         <script>
-            var field = document.getElementById("field");
-            var images = document.getElementsByClassName('choice__image');
-            var piled = 2;
-            for(var i = 0; i < images.length; i++){
-                images[i].addEventListener('click',function(){
-                    var originalImg = this.getElementsByTagName('img');
-                    var copiedImg = document.createElement("img");
-                    copiedImg.className = "draggable north"
-                    copiedImg.src = originalImg[0].getAttribute('src');
-                    copiedImg.style.width = "300px";
-                    copiedImg.style.cursor = "move";
-                    copiedImg.style.zIndex = piled;
-                    copiedImg.style.position = "absolute";
-                    copiedImg.style.top = Math.floor((Math.random() * (field.offsetHeight/2)) + 1) + "px";
-                    copiedImg.style.left = Math.floor((Math.random() * (field.offsetWidth/2) + 1)) + "px";
-                    field.appendChild(copiedImg);
-                    make_draggable(piled);
-                },false);
-            }
+            window.onload = function(){
+                var field = document.getElementById("field");
+                var images = document.getElementsByClassName('choice__image');
+                var piled = 2;
+                for(var i = 0; i < images.length; i++){
+                    images[i].addEventListener('click',function(){
+                        var originalImg = this.getElementsByTagName('img');
+                        var copiedImg = document.createElement("img");
+                        copiedImg.className = "draggable north"
+                        copiedImg.src = originalImg[0].getAttribute('src');
+                        copiedImg.style.width = "300px";
+                        copiedImg.style.cursor = "move";
+                        copiedImg.style.zIndex = piled;
+                        copiedImg.style.position = "absolute";
+                        copiedImg.style.top = Math.floor((Math.random() * (field.offsetHeight/2)) + 1) + "px";
+                        copiedImg.style.left = Math.floor((Math.random() * (field.offsetWidth/2) + 1)) + "px";
+                        field.appendChild(copiedImg);
+                        make_draggable(piled);
+                    },false);
+                }
 
-            function make_draggable(){
-                $('.draggable').draggable({
-                    start: function(event, ui) { 
-                        $(this).css("z-index", piled++); 
+                function make_draggable(){
+                    $('.draggable').draggable({
+                        start: function(event, ui) { 
+                            $(this).css("z-index", piled++); 
+                            $(this).addClass("selected");
+                            $(this).removeClass("unselected");
+                            $(".draggable").not(this).removeClass("selected");
+                            $(".draggable").not(this).addClass("unselected");
+                        }
+                    });
+                    $('.draggable').click(function() {
+                        $(this).css("z-index", piled++);
                         $(this).addClass("selected");
                         $(this).removeClass("unselected");
                         $(".draggable").not(this).removeClass("selected");
                         $(".draggable").not(this).addClass("unselected");
+                    });
+
+                }
+
+                var rotate_btn = $('.control__button.rotate');
+                rotate_btn.click(function(){
+                    var selected = $('.selected');
+                    console.log(selected.length);
+                    if(selected.length === 0){
+                        window.alert("회전할 이미지를 선택하세요");
+                    }
+                    if(selected.hasClass('north')){
+                        selected.removeClass("north");
+                        selected.addClass("west");
+                    }
+                    else if(selected.hasClass('west')){
+                        selected.removeClass("west");
+                        selected.addClass("south");
+                    }
+                    else if(selected.hasClass('south')){
+                        selected.removeClass("south");
+                        selected.addClass("east");
+                    }
+                    else if(selected.hasClass('east')){
+                        selected.removeClass("east");
+                        selected.addClass("north");
                     }
                 });
-                $('.draggable').click(function() {
-                    $(this).css("z-index", piled++);
-                    $(this).addClass("selected");
-                    $(this).removeClass("unselected");
-                    $(".draggable").not(this).removeClass("selected");
-                    $(".draggable").not(this).addClass("unselected");
+
+
+                var delete_btn = $('.control__button.delete');
+                delete_btn.click(function(){
+                    $('.selected').remove();
+                });
+                var init_btn = $('.control__button.initialize');
+                init_btn.click(function(){
+                    $('.draggable').remove();
+                });
+
+
+                var finish_btn = $('.control__button.finish');
+                finish_btn.click(function(){
+                    $('.draggable').removeClass("selected");
+                });
+
+                var print_btn = $('.control__button.print');
+                print_btn.click(function(){
+                    $('#field').printThis({
+                        header: '<h1 style="visibility:hidden;">.</h1>',
+                        importStyle: true,
+                        loadCSS: 'css/print.css',
+                    });
                 });
 
             }
-
-            var rotate_btn = $('.control__button.rotate');
-            rotate_btn.click(function(){
-                var selected = $('.selected');
-                if(selected.hasClass('north')){
-                    selected.removeClass("north");
-                    selected.addClass("west");
-                }
-                else if(selected.hasClass('west')){
-                    selected.removeClass("west");
-                    selected.addClass("south");
-                }
-                else if(selected.hasClass('south')){
-                    selected.removeClass("south");
-                    selected.addClass("east");
-                }
-                else if(selected.hasClass('east')){
-                    selected.removeClass("east");
-                    selected.addClass("north");
-                }
-            });
-
-            var delete_btn = $('.control__button.delete');
-            delete_btn.click(function(){
-                $('.selected').remove();
-            });
-            
-            var finish_btn = $('.control__button.finish');
-            finish_btn.click(function(){
-                $('.draggable').removeClass("selected");
-            });
-
-            var print_btn = $('.control__button.print');
-            print_btn.click(function(){
-                $('#field').printThis();
-            });
-
         </script>
     </body>
 </html>
