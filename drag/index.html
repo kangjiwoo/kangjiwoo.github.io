@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Drag</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <style>
+            html, body, div, p{
+                margin: 0;
+                padding: 0;
+            }
+            .control__wrapper{
+                float: right;
+            }
+            .control__button{
+                width: 50px;
+                height: 50px;
+                background-color: #000;
+                border-radius: 50%;
+                padding: 10px;
+                cursor: pointer;
+            }
+            .control__button p{
+                color: #fff;
+                position: relative;
+                float: left;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 14px;
+            }
+            .choice__image{
+                width: 100px;
+                height: 100px;
+                position: relative;
+                overflow: hidden;
+                border: 2px solid #000;
+                margin: 10px;
+            }
+            .choice__image img{
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                height: 100%;
+                width: auto;
+                -webkit-transform: translate(-50%,-50%);
+                -ms-transform: translate(-50%,-50%);
+                transform: translate(-50%,-50%);
+                cursor: pointer;
+            }
+            .choice__image img.portrait {
+                width: 100%;
+                height: auto;
+            }
+            #field{
+                width: 640px;
+                height: 480px;
+                border: 2px solid #000;
+                position: absolute;
+                margin: 0 auto;
+                left: 0;
+                right: 0;
+                overflow: hidden;
+            }
+            .selected{
+                border: 2px solid #000;
+            }
+            .unselected{
+                border: 0 !important;
+            }
+            .north {
+                transform:rotate(0deg);
+                -ms-transform:rotate(0deg); 
+                -webkit-transform:rotate(0deg); 
+            }
+            .west {
+                transform:rotate(90deg);
+                -ms-transform:rotate(90deg); 
+                -webkit-transform:rotate(90deg); 
+            }
+            .south {
+                transform:rotate(180deg);
+                -ms-transform:rotate(180deg); 
+                -webkit-transform:rotate(180deg); 
+
+            }
+            .east {
+                transform:rotate(270deg);
+                -ms-transform:rotate(270deg); 
+                -webkit-transform:rotate(270deg); 
+            }
+
+
+
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+
+            <!-- header -->
+            <div class="header">
+            </div>
+        </div>
+
+        <!-- main -->
+        <div class="main">
+            <!-- controller -->
+            <div class="control__wrapper">
+                <div class="control__button rotate">
+                    <p>Rotate</p>
+                </div>
+                <div class="control__button finish">
+                    <p>Finish</p>
+                </div>
+                <div class="control__button print">
+                    <p>Print</p>
+                </div>
+            </div>
+            <div id="field">
+            </div>
+            <div class="choice__wrapper">
+                <div class="choice__image">
+                    <img class="choice" src="./img/1.jpg">
+                </div>
+                <div class="choice__image">
+                    <img class="choice" src="./img/2.jpg">
+                </div>
+                <div class="choice__image">
+                    <img class="choice" src="./img/3.jpg">
+                </div>
+                <div class="choice__image">
+                    <img class="choice" src="./img/4.png">
+                </div>
+                <div class="choice__image">
+                    <img class="choice portrait" src="./img/5.jpg">
+                </div>
+                <div class="choice__image">
+                    <img class="choice" src="./img/6.jpg">
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+        <script src="" async defer></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <script src="printThis.js"></script>
+        <script>
+            var field = document.getElementById("field");
+            var images = document.getElementsByClassName('choice__image');
+            var piled = 2;
+            for(var i = 0; i < images.length; i++){
+                images[i].addEventListener('click',function(){
+                    var originalImg = this.getElementsByTagName('img');
+                    var copiedImg = document.createElement("img");
+                    copiedImg.className = "draggable north"
+                    copiedImg.src = originalImg[0].getAttribute('src');
+                    copiedImg.style.width = "300px";
+                    copiedImg.style.cursor = "move";
+                    copiedImg.style.zIndex = piled;
+                    copiedImg.style.position = "absolute";
+                    copiedImg.style.top = Math.floor((Math.random() * (field.offsetHeight/2)) + 1) + "px";
+                    copiedImg.style.left = Math.floor((Math.random() * (field.offsetWidth/2) + 1)) + "px";
+                    field.appendChild(copiedImg);
+                    make_draggable(piled);
+                },false);
+            }
+
+            function make_draggable(){
+                $('.draggable').draggable({
+                    start: function(event, ui) { 
+                        $(this).css("z-index", piled++); 
+                        $(this).addClass("selected");
+                        $(this).removeClass("unselected");
+                        $(".draggable").not(this).removeClass("selected");
+                        $(".draggable").not(this).addClass("unselected");
+                    }
+                });
+                $('.draggable').click(function() {
+                    $(this).css("z-index", piled++);
+                    $(this).addClass("selected");
+                    $(this).removeClass("unselected");
+                    $(".draggable").not(this).removeClass("selected");
+                    $(".draggable").not(this).addClass("unselected");
+                });
+
+            }
+
+            var rotate_btn = $('.control__button.rotate');
+            rotate_btn.click(function(){
+                var selected = $('.selected');
+                if(selected.hasClass('north')){
+                    selected.removeClass("north");
+                    selected.addClass("west");
+                }
+                else if(selected.hasClass('west')){
+                    selected.removeClass("west");
+                    selected.addClass("south");
+                }
+                else if(selected.hasClass('south')){
+                    selected.removeClass("south");
+                    selected.addClass("east");
+                }
+                else if(selected.hasClass('east')){
+                    selected.removeClass("east");
+                    selected.addClass("north");
+                }
+            });
+
+            var finish_btn = $('.control__button.finish');
+            finish_btn.click(function(){
+                $('.draggable').removeClass("selected");
+            });
+
+            var print_btn = $('.control__button.print');
+            print_btn.click(function(){
+                $('#field').printThis();
+            });
+
+        </script>
+    </body>
+</html>
