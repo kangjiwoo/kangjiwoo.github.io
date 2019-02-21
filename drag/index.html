@@ -112,6 +112,9 @@
                 <div class="control__button rotate">
                     <p>Rotate</p>
                 </div>
+                <div class="control__button delete">
+                    <p>Delete</p>
+                </div>
                 <div class="control__button finish">
                     <p>Finish</p>
                 </div>
@@ -213,6 +216,11 @@
                 }
             });
 
+            var delete_btn = $('.control__button.delete');
+            delete_btn.click(function(){
+                $('.selected').remove();
+            });
+            
             var finish_btn = $('.control__button.finish');
             finish_btn.click(function(){
                 $('.draggable').removeClass("selected");
@@ -220,7 +228,10 @@
 
             var print_btn = $('.control__button.print');
             print_btn.click(function(){
-                $('#field').printThis();
+                $('#field').printThis({
+                    importStyle: true,
+                    
+                });
             });
 
         </script>
