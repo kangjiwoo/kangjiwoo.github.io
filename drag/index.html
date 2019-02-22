@@ -8,23 +8,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
         <style>
-            html, body, div, p{
+            html, body, div, ul, li, p{
                 margin: 0;
                 padding: 0;
             }
-            .control__wrapper{
-                float: right;
+            li{
+                list-style: none;
             }
-            .control__button{
-                width: 50px;
-                height: 50px;
-                background-color: #000;
+            .l-col-6{
+                width: 50%;
+            }
+            .flex-wrapper{
+                display: flex;
+                justify-content: center;
+            }
+            .flex-column{
+                flex-direction: column;
+            }
+            .flex-center{
+                align-items: center;
+            }
+            .left{
+                border-right: 1px solid #000;
+            }
+            .right{
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+            .control__wrapper{
+                width: 100%;
+                height: 180px;
+                display: table;
+            }
+            .control__list{
+                display: table;
+                margin: 0 auto;
+            }
+            .control__list li.control__button{
+                display: inline-block;
+                margin: 30px 15px;
+                width: 60px;
+                height: 60px;
+                background-color: #fff;
+                border: 1px solid #000;
                 border-radius: 50%;
                 padding: 10px;
                 cursor: pointer;
             }
             .control__button p{
-                color: #fff;
+                color: #000;
                 position: relative;
                 float: left;
                 top: 50%;
@@ -32,12 +65,26 @@
                 transform: translate(-50%, -50%);
                 font-size: 14px;
             }
-            .choice__image{
-                width: 100px;
-                height: 100px;
+            .control__desc{
+                display: none;
+            }
+            .control__desc p{
+                line-height: 28px;
+            }
+
+            .chocie__wrapper{
+                width: 100%;
+            }
+            .choice__list{
+                margin: 0 auto;
+                text-align: center;
+            }
+            .choice__list li.choice__image{
+                display: inline-block;
                 position: relative;
+                width: 300px;
+                height: 400px;
                 overflow: hidden;
-                border: 2px solid #000;
                 margin: 10px;
             }
             .choice__image img{
@@ -56,13 +103,11 @@
                 height: auto;
             }
             #field{
+                border: 1px solid #000;
+                margin-top: 150px;
                 width: 640px;
                 height: 480px;
-                border: 2px solid #000;
-                position: absolute;
-                margin: 0 auto;
-                left: 0;
-                right: 0;
+                position: relative;
                 overflow: hidden;
             }
             .selected{
@@ -92,74 +137,123 @@
                 -ms-transform:rotate(270deg); 
                 -webkit-transform:rotate(270deg); 
             }
-
             @media print {
                 @page {
                     margin: 0; 
                 }
             }
+            @media(max-width: 900px){
+                .l-col-6{
+                    width: 100%;
+                }
+                .left{
+                    border: 0;
+                }
+                .flex-wrapper{
+                    justify-content: center;
+                }
+            }
         </style>
     </head>
     <body>
-        <div class="wrapper">
-
-            <!-- header -->
-            <div class="header">
-            </div>
-        </div>
-
-        <!-- main -->
+        <!-- MAIN -->
         <div class="main">
-            <!-- controller -->
-            <div class="control__wrapper">
-                <div class="control__button rotate">
-                    <p>Rotate</p>
+            <div class="closer"></div>
+            <!-- LEFT SIDE -->
+            <div class="l-col-6 left">
+                <!-- CONTROLLER -->
+                <div class="control__wrapper">
+                    <ul class="control__list">
+                        <li class="control__button rotate">
+                            <p>Rotate</p>
+                        </li>
+                        <li class="control__button delete">
+                            <p>Delete</p>
+                        </li>
+                        <li class="control__button initialize">
+                            <p>Initialize</p>
+                        </li>
+                        <li class="control__button finish">
+                            <p>Finish</p>
+                        </li>
+                        <li class="control__button save">
+                            <p>Save</p>
+                        </li>
+                        <li class="control__button print">
+                            <p>Print</p>
+                        </li>
+                    </ul>
+                    <div class="control__desc">
+                        <p>Rotate: 90도씩 시계방향으로 회전</p>
+                        <p>Delete: 선택한 사진 삭제</p>
+                        <p>Initialize: 보드 초기화</p>
+                        <p>Finish: 인쇄 전 확인단계</p>
+                        <p>Save: 이미지로 저장</p>
+                        <p>Print: 연결된 프린터로 인쇄</p>
+                    </div>
                 </div>
-                <div class="control__button delete">
-                    <p>Delete</p>
+                <!-- IMAGE LIST -->
+                <div class="choice__wrapper">
+                    <ul class="choice__list">
+                        <li class="choice__image">
+                            <img class="choice" src="./img/1.jpg">
+                        </li>
+                        <li class="choice__image">
+                            <img class="choice" src="./img/2.jpg">
+                        </li>
+                        <li class="choice__image">
+                            <img class="choice" src="./img/3.jpg">
+                        </li>
+                        <li class="choice__image">
+                            <img class="choice" src="./img/4.png">
+                        </li>
+                        <li class="choice__image">
+                            <img class="choice" src="./img/5.jpg">
+                        </li>
+                        <li class="choice__image">
+                            <img class="choice" src="./img/6.jpg">
+                        </li>
+                        <li class="choice__image">
+                            <img class="choice" src="./img/7.jpg">
+                        </li>
+                        <li class="choice__image">
+                            <img class="choice" src="./img/8.png">
+                        </li>
+                        <li class="choice__image">
+                            <img class="choice" src="./img/9.jpg">
+                        </li>
+                        <li class="choice__image">
+                            <img class="choice" src="./img/10.jpg">
+                        </li>
+                        <li class="choice__image">
+                            <img class="choice" src="./img/11.jpg">
+                        </li>
+                        <li class="choice__image">
+                            <img class="choice" src="./img/12.jpg">
+                        </li>
+                    </ul>
                 </div>
-                <div class="control__button initialize">
-                    <p>Initialize</p>
-                </div>
-                <div class="control__button finish">
-                    <p>Finish</p>
-                </div>
-                <div class="control__button print">
-                    <p>Print</p>
-                </div>
+
             </div>
-            <div id="field">
-            </div>
-            <div class="choice__wrapper">
-                <div class="choice__image">
-                    <img class="choice" src="./img/1.jpg">
-                </div>
-                <div class="choice__image">
-                    <img class="choice" src="./img/2.jpg">
-                </div>
-                <div class="choice__image">
-                    <img class="choice" src="./img/3.jpg">
-                </div>
-                <div class="choice__image">
-                    <img class="choice" src="./img/4.png">
-                </div>
-                <div class="choice__image">
-                    <img class="choice portrait" src="./img/5.jpg">
-                </div>
-                <div class="choice__image">
-                    <img class="choice" src="./img/6.jpg">
+
+            <!-- RIGHT SIDE -->
+            <div class="l-col-6 right">
+                <!-- FIELD -->
+                <div class="field__wrapper flex-wrapper">
+                    <div id="field"></div>
                 </div>
             </div>
 
 
+            <!-- END OF MAIN -->
         </div>
 
 
 
-        <script src="" async defer></script>
         <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
         <script src="printThis.js"></script>
+        <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
         <script>
             window.onload = function(){
                 var field = document.getElementById("field");
@@ -171,7 +265,7 @@
                         var copiedImg = document.createElement("img");
                         copiedImg.className = "draggable north"
                         copiedImg.src = originalImg[0].getAttribute('src');
-                        copiedImg.style.width = "300px";
+                        copiedImg.style.width = "260px";
                         copiedImg.style.cursor = "move";
                         copiedImg.style.zIndex = piled;
                         copiedImg.style.position = "absolute";
@@ -201,11 +295,17 @@
                     });
 
                 }
-
+                var buttons = $('.control__button');
+                buttons.hover(function(){
+                    $(this).css('background-color', '#000');
+                    $(this).children("p").css('color', '#fff');
+                }, function() {
+                    $(this).css('background-color', '#fff');
+                    $(this).children("p").css('color', '#000');
+                });
                 var rotate_btn = $('.control__button.rotate');
                 rotate_btn.click(function(){
                     var selected = $('.selected');
-                    console.log(selected.length);
                     if(selected.length === 0){
                         window.alert("회전할 이미지를 선택하세요");
                     }
@@ -236,13 +336,22 @@
                 init_btn.click(function(){
                     $('.draggable').remove();
                 });
-
-
                 var finish_btn = $('.control__button.finish');
                 finish_btn.click(function(){
                     $('.draggable').removeClass("selected");
                 });
-
+                var save_btn = $('.control__button.save');
+                save_btn.click(function(){
+                    $('#field').css("border", "0");
+                    html2canvas($('#field').get(0)).then(function (canvas) {
+                        var base64encodedstring = canvas.toDataURL("image/jpg", 1);
+                        $('#field').css("border","1px solid #000");
+                        var a = document.createElement('a');
+                        a.href = base64encodedstring;
+                        a.download = 'image.jpg';
+                        a.click();
+                    });
+                });
                 var print_btn = $('.control__button.print');
                 print_btn.click(function(){
                     $('#field').printThis({
