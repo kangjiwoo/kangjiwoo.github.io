@@ -7,7 +7,6 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
         <style>
             html, body, div, ul, li, p{
                 margin: 0;
@@ -146,9 +145,11 @@
                 }
             }
             @media(max-width: 900px){
+/*
                 .l-col-6{
                     width: 100%;
                 }
+*/
                 .left{
                     border: 0;
                 }
@@ -268,12 +269,9 @@
             window.onload = function(){
                 var field = document.getElementById("field");
                 var images = document.getElementsByClassName('choice__image');
-                var canvas_image = [];
-                var count = 0;
                 var piled = 2;
                 for(var i = 0; i < images.length; i++){
                     images[i].addEventListener('click',function(){
-                        count++;
                         var originalImg = this.getElementsByTagName('img');
                         var copiedImg = document.createElement("img");
                         copiedImg.className = "draggable north"
@@ -359,7 +357,6 @@
                 var delete_btn = $('.control__button.delete');
                 delete_btn.click(function(){
                     $('.selected').remove();
-                    count--;
                 });
                 var init_btn = $('.control__button.initialize');
                 init_btn.click(function(){
@@ -386,6 +383,7 @@
                     $('#field').css("border", "0");
                     $('.draggable').removeClass("selected");
                     html2canvas($('#field').get(0)).then(function (canvas) {
+                        console.log($('#field').get(0));
                         var base64encodedstring = canvas.toDataURL("image/jpg", 1);
                         var a = document.createElement('a');
                         a.href = base64encodedstring;
@@ -411,5 +409,6 @@
 
             }
         </script>
+
     </body>
 </html>
